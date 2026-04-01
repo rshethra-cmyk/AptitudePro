@@ -10,7 +10,7 @@ export default function Subtopics() {
   useEffect(() => {
     const fetchSubtopics = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/quiz/subtopics/${topicId}`);
+        const res = await axios.get(`https://aptitudepro-backend-ywhf.onrender.com/api/quiz/subtopics/${topicId}`);
         setSubtopics(res.data);
       } catch (error) {
         console.error('Error fetching subtopics');

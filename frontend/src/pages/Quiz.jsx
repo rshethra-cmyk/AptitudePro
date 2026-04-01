@@ -48,7 +48,7 @@ export default function Quiz() {
     
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/quiz/submit', 
+      await axios.post('https://aptitudepro-backend-ywhf.onrender.com/api/quiz/submit', 
         { topic, score, totalQuestions: questions.length },
         { headers: { Authorization: `Bearer ${token}` } }
       );

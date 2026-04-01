@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     const fetchTopics = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/quiz/topics');
+        const res = await axios.get('https://aptitudepro-backend-ywhf.onrender.com/api/quiz/topics');
         setTopics(res.data);
       } catch (error) {
         console.error('Error fetching topics');
