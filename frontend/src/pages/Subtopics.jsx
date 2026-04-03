@@ -27,9 +27,9 @@ export default function Subtopics() {
       <h2 className="text-2xl font-bold mb-6 text-gray-800 capitalize">{topicId} Modules</h2>
       <div className="flex flex-col gap-3 overflow-y-auto pb-6">
         {subtopics.map((subtopic, index) => (
-          <button 
+          <button
             key={index}
-            onClick={() => navigate(`/quiz?topic=${topicId}&subtopic=${subtopic}`)}
+            onClick={() => navigate(`/quiz?topic=${topicId}&subtopic=${encodeURIComponent(subtopic)}`)}
             className="p-4 bg-white rounded-lg shadow-sm border border-gray-100 flex items-center justify-between hover:bg-blue-50 transition-colors active:scale-95"
           >
             <span className="text-md font-medium text-gray-700">{subtopic}</span>
