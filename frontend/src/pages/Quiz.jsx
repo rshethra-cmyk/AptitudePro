@@ -5,6 +5,7 @@ import api from '../api';
 export default function Quiz() {
   const [searchParams] = useSearchParams();
   const topic = searchParams.get('topic');
+  const subtopic = searchParams.get('subtopic');
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
