@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 
 export default function Home() {
   const [topics, setTopics] = useState([]);
@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     const fetchTopics = async () => {
       try {
-        const res = await axios.get('https://aptitudepro-backend-ywhf.onrender.com/api/quiz/topics');
+        const res = await api.get('/api/quiz/topics');
         setTopics(res.data);
       } catch (error) {
         console.error('Error fetching topics');

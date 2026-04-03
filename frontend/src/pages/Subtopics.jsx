@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 
 export default function Subtopics() {
   const { topicId } = useParams();
@@ -10,7 +10,7 @@ export default function Subtopics() {
   useEffect(() => {
     const fetchSubtopics = async () => {
       try {
-        const res = await axios.get(`https://aptitudepro-backend-ywhf.onrender.com/api/quiz/subtopics/${topicId}`);
+        const res = await api.get(`/api/quiz/subtopics/${topicId}`);
         setSubtopics(res.data);
       } catch (error) {
         console.error('Error fetching subtopics');

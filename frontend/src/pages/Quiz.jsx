@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 
 export default function Quiz() {
   const [searchParams] = useSearchParams();
@@ -12,15 +12,19 @@ export default function Quiz() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Generate dummy questions since backend DB might be empty
-    const dummyQuestions = Array.from({length: 10}).map((_, i) => ({
-      _id: i,
-      text: `Sample Aptitude Question ${i + 1} for ${topic}?`,
-      options: ['Option A', 'Option B', 'Option C', 'Option D'],
-      correctAnswer: 'Option A'
-    }));
-    setQuestions(dummyQuestions);
-    
+    const fetchQuestions = async () => {
+      try {
+        const res = await api.get(
+          `/api/quiz/questions?topic=${topic}&subtopic=${encodeURIComponent(subtopic)}`
+        );
+        setQuestions(res.data);
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+      }
+    };
+
+    fetchQuestions();
+
     // Timer
     const timer = setInterval(() => {
       setTimeLeft(prev => {
@@ -45,10 +49,10 @@ export default function Quiz() {
     questions.forEach(q => {
       if (answers[q._id] === q.correctAnswer) score++;
     });
-    
+
     try {
       const token = localStorage.getItem('token');
-      await axios.post('https://aptitudepro-backend-ywhf.onrender.com/api/quiz/submit', 
+      await api.post('/api/quiz/submit',
         { topic, score, totalQuestions: questions.length },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -75,10 +79,10 @@ export default function Quiz() {
       </div>
 
       <div className="flex-1">
-        <h3 className="text-xl font-semibold mb-6 text-gray-800">{q.text}</h3>
+        <h3 className="text-xl font-semibold mb-6 text-gray-800">{q.question}</h3>
         <div className="flex flex-col gap-3">
           {q.options.map((opt, i) => (
-            <button 
+            <button
               key={i}
               onClick={() => handleSelectOption(q._id, opt)}
               className={`p-4 rounded-lg text-left border ${answers[q._id] === opt ? 'bg-blue-100 border-blue-500 text-blue-700' : 'bg-white border-gray-200 text-gray-700'} hover:bg-gray-50 transition-colors cursor-pointer w-full`}
@@ -90,7 +94,7 @@ export default function Quiz() {
       </div>
 
       <div className="flex justify-between mt-8">
-        <button 
+        <button
           onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
           className="px-6 py-2 bg-gray-200 rounded-lg font-semibold text-gray-700 disabled:opacity-50"
           disabled={currentIndex === 0}
@@ -102,7 +106,7 @@ export default function Quiz() {
             Submit
           </button>
         ) : (
-          <button 
+          <button
             onClick={() => setCurrentIndex(Math.min(questions.length - 1, currentIndex + 1))}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold"
           >

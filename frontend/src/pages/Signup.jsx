@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 
 export default function Signup() {
   const [username, setUsername] = useState('');
@@ -11,7 +11,7 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://aptitudepro-backend-ywhf.onrender.com/api/auth/signup', { username, email, password });
+      await api.post('/api/auth/signup', { username, email, password });
       alert('Signup successful! Please login.');
       navigate('/login');
     } catch (error) {
